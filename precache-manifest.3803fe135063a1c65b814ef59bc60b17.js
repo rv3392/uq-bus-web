@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "bfe29fcd6c5db8eb0896e6ffe05fd1a6",
+    "revision": "4289f2aa7fdf5a4f9744972027d7be9c",
     "url": "/uq-bus-web/index.html"
   },
   {
-    "revision": "8630922320f8163e94f0",
+    "revision": "79e80e6b74998ab33e3c",
     "url": "/uq-bus-web/static/css/main.55d72bbf.chunk.css"
   },
   {
-    "revision": "826281ce259baa0a70c6",
-    "url": "/uq-bus-web/static/js/2.d1a19dde.chunk.js"
+    "revision": "a025549779de0d9a201d",
+    "url": "/uq-bus-web/static/js/2.ee9c21e0.chunk.js"
   },
   {
     "revision": "5356fa2f66e46e6c05e4cbe319ac7f1d",
-    "url": "/uq-bus-web/static/js/2.d1a19dde.chunk.js.LICENSE.txt"
+    "url": "/uq-bus-web/static/js/2.ee9c21e0.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "8630922320f8163e94f0",
-    "url": "/uq-bus-web/static/js/main.5cc53d9c.chunk.js"
+    "revision": "79e80e6b74998ab33e3c",
+    "url": "/uq-bus-web/static/js/main.c56249cd.chunk.js"
   },
   {
     "revision": "9b584e9d3c323e7a958f",

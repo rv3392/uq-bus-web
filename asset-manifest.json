@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/uq-bus-web/static/css/main.55d72bbf.chunk.css",
-    "main.js": "/uq-bus-web/static/js/main.5cc53d9c.chunk.js",
-    "main.js.map": "/uq-bus-web/static/js/main.5cc53d9c.chunk.js.map",
+    "main.js": "/uq-bus-web/static/js/main.c56249cd.chunk.js",
+    "main.js.map": "/uq-bus-web/static/js/main.c56249cd.chunk.js.map",
     "runtime-main.js": "/uq-bus-web/static/js/runtime-main.64a13ae0.js",
     "runtime-main.js.map": "/uq-bus-web/static/js/runtime-main.64a13ae0.js.map",
-    "static/js/2.d1a19dde.chunk.js": "/uq-bus-web/static/js/2.d1a19dde.chunk.js",
-    "static/js/2.d1a19dde.chunk.js.map": "/uq-bus-web/static/js/2.d1a19dde.chunk.js.map",
+    "static/js/2.ee9c21e0.chunk.js": "/uq-bus-web/static/js/2.ee9c21e0.chunk.js",
+    "static/js/2.ee9c21e0.chunk.js.map": "/uq-bus-web/static/js/2.ee9c21e0.chunk.js.map",
     "index.html": "/uq-bus-web/index.html",
-    "precache-manifest.e5499888534b88b047265ea9ac7910b9.js": "/uq-bus-web/precache-manifest.e5499888534b88b047265ea9ac7910b9.js",
+    "precache-manifest.3803fe135063a1c65b814ef59bc60b17.js": "/uq-bus-web/precache-manifest.3803fe135063a1c65b814ef59bc60b17.js",
     "service-worker.js": "/uq-bus-web/service-worker.js",
     "static/css/main.55d72bbf.chunk.css.map": "/uq-bus-web/static/css/main.55d72bbf.chunk.css.map",
-    "static/js/2.d1a19dde.chunk.js.LICENSE.txt": "/uq-bus-web/static/js/2.d1a19dde.chunk.js.LICENSE.txt"
+    "static/js/2.ee9c21e0.chunk.js.LICENSE.txt": "/uq-bus-web/static/js/2.ee9c21e0.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.64a13ae0.js",
-    "static/js/2.d1a19dde.chunk.js",
+    "static/js/2.ee9c21e0.chunk.js",
     "static/css/main.55d72bbf.chunk.css",
-    "static/js/main.5cc53d9c.chunk.js"
+    "static/js/main.c56249cd.chunk.js"
   ]
 }
