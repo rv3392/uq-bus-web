@@ -5,6 +5,7 @@ const BusDisplayTable = ({buses}) => {
         <table>
             <thead>
                 <tr>
+                    <th>route_name</th>
                     <th>trip_id</th>
                     <th>stop_id</th>
                     <th>departure_time</th>
@@ -15,9 +16,10 @@ const BusDisplayTable = ({buses}) => {
                     (buses.length > 0) ? buses.map((bus, index) => {
                         return (
                             <tr key = {index}>
-                                <td>{bus.trip_id}</td>
-                                <td>{bus.stop_id}</td>
-                                <td>{bus.departure_time}</td>
+                                <td>{bus.route_long_name}</td>
+                                <td>{bus.tripId}</td>
+                                <td>{bus.stopId}</td>
+                                <td>{bus.departureTime}</td>
                             </tr>
                         )
                     }) : <tr><td>Loading...</td></tr> 
