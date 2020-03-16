@@ -8,35 +8,48 @@ import BusDisplayTable from './BusDisplayTable.js';
 //Gets further bus details from 'routes' table using a route_id found in
 //'trips'
 
-const uqStops = ["1853", "1878", "1880", "1882", "1883"];
+const uqStops = ["1853", "1877", "1878", "1880", "1883", "1882"];
 
 class Bus {
-  constructor(tripId, stopId, departureTime, application) {
+  constructor(tripId, stopId, time, direction, application) {
+
     this.tripId = tripId;
     this.stopId = stopId;
-    this.departureTime = departureTime;
+    this.direction = direction;
 
-    this.trip = "Loading...";
-    this.route = "Loading...";
-    this.route_long_name = "Loading...";
-    this.route_short_name = "Loading...";
+    this.time = "Loading...  ";
+    this.trip = "Loading...  ";
+
+    this.route = "Loading...  ";
+    this.routeLongName = "Loading...  ";
+    this.routeShortName = "Loading...  ";
+
+    this.stop = "Loading...  ";
+    this.stopName = "Loading...  ";
 
     var routePromise = this.getTripPromise(this.tripId).then(function(locTrip) {
       this.trip = locTrip[0];
-      console.log(locTrip[0]);
       return this.getRoutePromise(locTrip[0].route_id);
     }.bind(this));
 
-    var completedPromise = routePromise.then(function(locRoute) {
+    var completedRoutePromise = routePromise.then(function(locRoute) {
       this.route = locRoute;
-      this.route_long_name = locRoute[0].route_long_name;
-      this.route_short_name = locRoute[0].route_short_name;
-      console.log(locRoute);
+      this.routeLongName = locRoute[0].route_long_name;
+      this.routeShortName = locRoute[0].route_short_name;
     }.bind(this));
 
-    completedPromise.then(function() {
+    completedRoutePromise.then(function() {
+      this.time = time;
       application.stateUpdateCallback();
-    });    
+    }.bind(this));
+
+    var completedStopPromise = 
+        this.getStopPromise(stopId).then(function(locStop) {
+      this.stop = locStop;
+      this.stopName = locStop[0].stop_name;
+    }.bind(this));
+
+    completedStopPromise.then(() => application.stateUpdateCallback);
   }
 
   getTripPromise(tripId) {
@@ -46,6 +59,11 @@ class Bus {
 
   getRoutePromise(routeId) {
     return fetch("http://uqbus.richal.tech/route/route_id/" + routeId + "/")
+        .then(res => res.json());
+  }
+
+  getStopPromise(stopId) {
+    return fetch("http://uqbus.richal.tech/stop/stop_id/" + stopId + "/")
         .then(res => res.json());
   }
 
@@ -63,7 +81,8 @@ class Bus {
 class App extends React.Component {
 
   state = {
-    buses: []
+    departingBuses: [],
+    arrivingBuses: []
   };
 
   componentDidMount() {
@@ -78,8 +97,13 @@ class App extends React.Component {
     var today = new Date();
     var today_brisbane = new Date(today.toLocaleString('en-US', {timezone: "Australia/Brisbane"}));
 
-    var date = today_brisbane.getFullYear() + '-' + (today_brisbane.getMonth() + 1) + '-' + today_brisbane.getDate();
-    var time = today_brisbane.getHours() + ':' + today_brisbane.getMinutes() + ':' + today_brisbane.getSeconds();
+    var date = today_brisbane.getFullYear() + '-' 
+        + (today_brisbane.getMonth() + 1).toString().padStart(2, "0") + '-' 
+        + today_brisbane.getDate().toString().padStart(2, "0");
+
+    var time = today_brisbane.getHours().toString().padStart(2, "0") 
+        + ':' + today_brisbane.getMinutes().toString().padStart(2, "0") 
+        + ':' + today_brisbane.getSeconds().toString().padStart(2, "0");
 
     return fetch("http://uqbus.richal.tech/stop_time/stop_id/" 
         + stopId + "/current_time/" + date + " " + time + "/")
@@ -91,7 +115,8 @@ class App extends React.Component {
   getBuses() {
     var busPromises = [];
     var stopTimes = [];
-    var importedBuses = [];
+    var departingBuses = [];
+    var arrivingBuses = [];
 
     for (var i = 0; i < uqStops.length; i++) {
       busPromises = busPromises.concat(this.getBusesForStop(uqStops[i]));
@@ -100,14 +125,21 @@ class App extends React.Component {
     Promise.all(busPromises).then(values => {
       values.forEach(value => stopTimes = stopTimes.concat(value));
       stopTimes.forEach(busJSON => {
-        var bus = 
-            new Bus(busJSON.trip_id, busJSON.stop_id, 
-            busJSON.departure_time, this);
-        importedBuses.push(bus);
+        var direction = busJSON.stop_id !== "1882" ? "departing" : "arriving";
+        var bus = new Bus(busJSON.trip_id, busJSON.stop_id, 
+            busJSON.departure_time, direction, this);
+        console.log(bus);
+
+        if (direction === "departing") {
+          departingBuses.push(bus);
+        } else {
+          arrivingBuses.push(bus);
+        }
       });
 
       this.setState({
-        buses: importedBuses
+        departingBuses: departingBuses,
+        arrivingBuses: arrivingBuses
       });
 
     });
@@ -116,7 +148,10 @@ class App extends React.Component {
   render() {
     return (
     <div className="BusTable">
-      <BusDisplayTable buses = {this.state.buses}/>
+      <h2>Departures</h2>
+      <BusDisplayTable buses = {this.state.departingBuses}/>
+      <h2>Arrivals</h2>
+      <BusDisplayTable buses = {this.state.arrivingBuses}/>
     </div>
     );
   }
