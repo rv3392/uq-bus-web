@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/uq-bus-web/precache-manifest.279f75035d8b795adfe63dc55620f81d.js"
+  "/uq-bus-web/precache-manifest.93e84d9ecbea1d73f78834947c9c866a.js"
 );
 
 self.addEventListener('message', (event) => {
