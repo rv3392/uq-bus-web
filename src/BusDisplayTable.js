@@ -5,7 +5,7 @@ const columns = [
     {key: "no", name : "No.", sortable : true},
     {key: "route", name : "Route"},
     {key: "stop", name : "Stop", sortable : true},
-    {key: "time", name : "Time", sortable : true}
+    {key: "time", name : "Time", sortable : true, sortDescendingFirst : true}
 ];
 
 class BusDisplayTable extends React.Component {

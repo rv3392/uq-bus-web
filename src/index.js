@@ -17,7 +17,23 @@ class App extends React.Component {
     this.getBuses();
   }
 
-  stateUpdateCallback() {
+  stateUpdateCallback(bus, direction) {
+    var buses = [bus];
+
+    if (direction === "departing") {
+      buses = this.state.departingBuses.concat(buses);
+      this.setState({
+        departingBuses : buses,
+        arrivingBuses : this.state.arrivingBuses
+      });
+    } else if (direction === "arriving") {
+      buses = this.state.arrivingBuses.concat(buses);
+      this.setState({
+        departingBuses : this.state.departingBuses,
+        arrivingBuses : buses
+      });
+    }
+    
     this.forceUpdate();
   }
 
@@ -33,18 +49,15 @@ class App extends React.Component {
         + ':' + today_brisbane.getMinutes().toString().padStart(2, "0") 
         + ':' + today_brisbane.getSeconds().toString().padStart(2, "0");
 
-    return fetch("http://uqbus.richal.tech/stop_time/stop_id/" 
-        + stopId + "/current_time/" + date + " " + time + "/")
-        .then(res => {
-          return res.json();
-        });
+    return fetch("http://uqbus.richal.tech/stop_time/stop_id/" + stopId + "/current_time/" + date + " " + time + "/")
+      .then(res => {
+        return res.json();
+      });
   }
 
   getBuses() {
     var busPromises = [];
     var stopTimes = [];
-    var departingBuses = [];
-    var arrivingBuses = [];
 
     for (var i = 0; i < uqStops.length; i++) {
       busPromises = busPromises.concat(this.getBusesForStop(uqStops[i]));
@@ -52,24 +65,13 @@ class App extends React.Component {
 
     Promise.all(busPromises).then(values => {
       values.forEach(value => stopTimes = stopTimes.concat(value));
+
       stopTimes.forEach(busJSON => {
         var direction = busJSON.stop_id !== "1882" ? "departing" : "arriving";
         var bus = new Bus(busJSON.trip_id, busJSON.stop_id, 
             busJSON.departure_time, direction, this);
         console.log(bus);
-
-        if (direction === "departing") {
-          departingBuses.push(bus);
-        } else {
-          arrivingBuses.push(bus);
-        }
       });
-
-      this.setState({
-        departingBuses: departingBuses,
-        arrivingBuses: arrivingBuses
-      });
-
     });
   }
 

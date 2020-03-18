@@ -5,8 +5,8 @@ class Bus {
       this.stopId = stopId;
       this.direction = direction;
   
-      this.time = "Loading...  ";
-      this.trip = "Loading...  ";
+      this.time = "Loading... ";
+      this.trip = "Loading... ";
   
       this.route = "Loading...  ";
       this.routeLongName = "Loading...  ";
@@ -37,7 +37,9 @@ class Bus {
         this.stopName = locStop[0].stop_name;
       }.bind(this));
   
-      completedStopPromise.then(() => application.stateUpdateCallback);
+      completedStopPromise.then(
+        () => application.stateUpdateCallback(this, this.direction)
+      );
     }
   
     getTripPromise(tripId) {
