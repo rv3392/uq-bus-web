@@ -37,7 +37,9 @@ class App extends React.Component {
     this.forceUpdate();
   }
 
-  getBusesForStop(stopId) {
+  getBuses() {
+    var stops = ""
+
     var today = new Date();
     var today_brisbane = new Date(today.toLocaleString('en-US', {timezone: "Australia/Brisbane"}));
 
@@ -49,27 +51,22 @@ class App extends React.Component {
         + ':' + today_brisbane.getMinutes().toString().padStart(2, "0") 
         + ':' + today_brisbane.getSeconds().toString().padStart(2, "0");
 
-    return fetch("http://uqbus.richal.tech/stop_time/stop_id/" + stopId + "/current_time/" + date + " " + time + "/")
+    for (var i = 0; i < uqStops.length; i++) {
+      stops = i === uqStops.length - 1 ? stops.toString() + uqStops[i].toString() : stops.toString() + uqStops[i].toString() + ","; 
+    }
+
+    console.log(stops)
+
+    var busPromises = 
+      fetch("http://uqbus.richal.tech/stop_time?time=" + date + " " + time + "&stop_id=" + stops)
       .then(res => {
         return res.json();
       });
-  }
 
-  getBuses() {
-    var busPromises = [];
-    var stopTimes = [];
-
-    for (var i = 0; i < uqStops.length; i++) {
-      busPromises = busPromises.concat(this.getBusesForStop(uqStops[i]));
-    }
-
-    Promise.all(busPromises).then(values => {
-      values.forEach(value => stopTimes = stopTimes.concat(value));
-
+    busPromises.then(stopTimes => {
       stopTimes.forEach(busJSON => {
         var direction = busJSON.stop_id !== "1882" ? "departing" : "arriving";
-        var bus = new Bus(busJSON.trip_id, busJSON.stop_id, 
-            busJSON.departure_time, direction, this);
+        var bus = new Bus(busJSON.trip_id, busJSON.stop_id, busJSON.departure_time, direction, this);
         console.log(bus);
       });
     });
