@@ -78,19 +78,19 @@ class App extends React.Component {
     return (
     <div className="BusTable">
       <h1 align = "center">UQBus</h1>
-      <h2 align = "center">UQ Lakes Station</h2>
+      <h2 align = "center">UQ Lakes</h2>
       <Grid container spacing={0} alignItems="center" justify="center">
-        <Grid item xs={6}>
+        <Grid item>
           <h2>Departures</h2>
           <BusDisplayTable app = {this} buses = {this.state.departingBuses}/>
         </Grid>
       </Grid>
 
       <Grid container spacing={0} alignItems="center" justify="center">
-        <Grid item xs={6}>
+        <Grid item>
           <h2>Arrivals</h2>
           <BusDisplayTable app = {this} buses = {this.state.arrivingBuses}/>
-          </Grid>
+        </Grid>
       </Grid>
     </div>
     );
