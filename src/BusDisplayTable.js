@@ -1,91 +1,90 @@
 import React from 'react';
-import ReactDataGrid from 'react-data-grid';
-
-const columns = [
-    {key: "no", name : "No.", sortable : true},
-    {key: "route", name : "Route"},
-    {key: "stop", name : "Stop", sortable : true},
-    {key: "time", name : "Time", sortable : true, sortDescendingFirst : true}
-];
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 class BusDisplayTable extends React.Component {
-    state = {
-      rows : this.convertBuses(this.props.buses), 
-      initialRows : this.convertBuses(this.props.buses)
-    };
+  state = {
+    rows : this.convertBuses(this.props.buses), 
+    initialRows : this.convertBuses(this.props.buses),
+    classes : this.useStyles()
+  };
 
-    convertBuses(busProps) {
-        var buses = [];
+  useStyles() {
+    return ({
+            table: {
+              minWidth: 500,
+            },
+          });
+  }
 
-        for (var i = 0; i < busProps.length; i++) {
-            var busProp = busProps[i];
-            var bus = {no:busProp.routeShortName, route:busProp.routeLongName,
-                stop:busProp.stopName, time:busProp.time};
-            buses.push(bus);
-        }
+  convertBuses(busProps) {
+      var buses = [];
 
-        return buses;
-    }
-
-    componentDidMount() {
-      this.setState({
-        rows : this.convertBuses(this.props.buses),
-        initialRows: this.state.rows
-      }); 
-    }
-
-    componentWillReceiveProps(nextProps) {
-      this.setState({
-        rows : this.convertBuses(this.props.buses),
-        initialRows: this.state.rows
-      }); 
-    }
-
-    setRows(inRows) {
-      this.setState({
-        rows : inRows,
-        initialRows: this.state.rows
-      }); 
-    }
-
-    onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        this.setState(state => {
-          var rows = state.rows.slice();
-          for (let i = fromRow; i <= toRow; i++) {
-            rows[i] = { ...rows[i], ...updated };
-          }
-          return { rows };
-        });
-    };
-
-    sortRows = (initialRows, sortColumn, sortDirection) => {
-      const comparer = (a, b) => {
-        if (sortDirection === "ASC") {
-          return a[sortColumn] > b[sortColumn] ? 1 : -1;
-        } else if (sortDirection === "DESC") {
-          return a[sortColumn] < b[sortColumn] ? 1 : -1;
-        }
-      };
-      return sortDirection === "NONE" ? initialRows : [...this.state.rows].sort(comparer);
-    };
-
-    render() {
-        return (
-          <ReactDataGrid
-            columns={columns}
-            rowGetter={i => this.state.rows[i]}
-            rowsCount={this.state.rows.length}
-            onGridRowsUpdated={this.onGridRowsUpdated}
-            onGridSort=
-              {(sortColumn, sortDirection) =>
-                this.setRows(
-                  this.sortRows(this.state.initialRows, sortColumn, sortDirection)
-                )
-              }
-            enableCellSelect={true}
-          />
-        );
+      for (var i = 0; i < busProps.length; i++) {
+          var busProp = busProps[i];
+          var bus = {no:busProp.routeShortName, route:busProp.routeLongName,
+              stop:busProp.stopName, time:busProp.time};
+          buses.push(bus);
       }
+
+      return buses;
+  }
+
+  componentDidMount() {
+    this.setState({
+      rows : this.convertBuses(this.props.buses),
+      initialRows: this.state.rows
+    }); 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      rows : this.convertBuses(this.props.buses),
+      initialRows: this.state.rows
+    }); 
+  }
+
+  getRows() {
+    return this.state.rows.map(bus => {
+      return <TableRow>
+                <TableCell>{bus.no}</TableCell>
+                <TableCell>{bus.route}</TableCell>
+                <TableCell>{bus.stop}</TableCell>
+                <TableCell>{bus.time}</TableCell>
+              </TableRow>
+    });
+  }
+
+  render() {
+      return (
+        <TableContainer component={Paper}>
+          <Table className={this.state.classes.table} size="small" aria-label="simple table">
+            <colgroup>
+              <col style = {{width : '5%'}}/>
+              <col style = {{width : '40%'}}/>
+              <col style = {{width : '40%'}}/>
+              <col style = {{width : '15%'}}/>
+            </colgroup>
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell align="left">Route</TableCell>
+                <TableCell align="left">Stop</TableCell>
+                <TableCell align="left">Time</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.getRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      );
+    }
 }
 
 export default BusDisplayTable;

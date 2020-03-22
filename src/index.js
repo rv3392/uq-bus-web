@@ -4,6 +4,8 @@ import './index.css';
 import BusDisplayTable from './busDisplayTable.js';
 import Bus from './bus.js';
 
+import Grid from '@material-ui/core/Grid';
+
 const uqStops = ["1853", "1877", "1878", "1880", "1883", "1882"];
 
 class App extends React.Component {
@@ -75,11 +77,21 @@ class App extends React.Component {
   render() {
     return (
     <div className="BusTable">
-      <h1>UQBus</h1>
-      <h2>Departures</h2>
-      <BusDisplayTable app = {this} buses = {this.state.departingBuses}/>
-      <h2>Arrivals</h2>
-      <BusDisplayTable app = {this} buses = {this.state.arrivingBuses}/>
+      <h1 align = "center">UQBus</h1>
+      <h2 align = "center">UQ Lakes Station</h2>
+      <Grid container spacing={0} alignItems="center" justify="center">
+        <Grid item xs={6}>
+          <h2>Departures</h2>
+          <BusDisplayTable app = {this} buses = {this.state.departingBuses}/>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={0} alignItems="center" justify="center">
+        <Grid item xs={6}>
+          <h2>Arrivals</h2>
+          <BusDisplayTable app = {this} buses = {this.state.arrivingBuses}/>
+          </Grid>
+      </Grid>
     </div>
     );
   }
