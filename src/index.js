@@ -75,6 +75,7 @@ class App extends React.Component {
   render() {
     return (
     <div className="BusTable">
+      <h1>UQBus</h1>
       <h2>Departures</h2>
       <BusDisplayTable app = {this} buses = {this.state.departingBuses}/>
       <h2>Arrivals</h2>

@@ -1,6 +1,16 @@
 body {
     font: 14px "Century Gothic", Futura, sans-serif;
     margin: 20px;
+    background: #9e2696;
+  }
+
+  h1 {
+    color: #fff;
+    font: 100px "Century Gothic", Futura, sans-serif;
+  }
+
+  h2, h3 {
+    color: #fff;
   }
   
   ol, ul {
