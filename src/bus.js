@@ -10,35 +10,49 @@ class Bus {
   
       this.route = "Loading...  ";
       this.routeLongName = "Loading...  ";
-      this.routeShortName = "Loading...  ";
+      this.routeShortName = "...";
   
       this.stop = "Loading...  ";
-      this.stopName = "Loading...  ";
+      this.stopName = "...";
+
+      this.isLoading = true;
+
+      const stopsDictionary = {"UQ Lakes, platform A": "A",
+                                "UQ Lakes, platform B": "B",
+                                "UQ Lakes, platform C": "C",
+                                "UQ Lakes, platform D": "D",
+                                "UQ Lakes, platform E": "E",
+                                "UQ Lakes station": "Any"};
   
       var routePromise = this.getTripPromise(this.tripId).then(function(locTrip) {
         this.trip = locTrip[0];
+
         return this.getRoutePromise(locTrip[0].route_id);
       }.bind(this));
   
-      var completedRoutePromise = routePromise.then(function(locRoute) {
+      var timePromise = routePromise.then(function(locRoute) {
         this.route = locRoute;
         this.routeLongName = locRoute[0].route_long_name;
         this.routeShortName = locRoute[0].route_short_name;
       }.bind(this));
   
-      completedRoutePromise.then(function() {
+      var stopPromise = timePromise.then(function() {
         this.time = time;
+        this.time = this.time.substring(0, 5);
         application.stateUpdateCallback();
+
+        return this.getStopPromise(stopId)
       }.bind(this));
   
-      var completedStopPromise = 
-          this.getStopPromise(stopId).then(function(locStop) {
+      var loadCompletePromise = stopPromise.then(function(locStop) {
         this.stop = locStop;
-        this.stopName = locStop[0].stop_name;
+        this.stopName = stopsDictionary[locStop[0].stop_name];
       }.bind(this));
   
-      completedStopPromise.then(
-        () => application.stateUpdateCallback(this, this.direction)
+      loadCompletePromise.then(() => {
+          this.isLoading = false;
+          application.stateUpdateCallback(this, this.direction)
+        }
       );
     }
   

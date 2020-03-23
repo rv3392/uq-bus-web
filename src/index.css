@@ -9,7 +9,12 @@ body {
     font: 100px "Century Gothic", Futura, sans-serif;
   }
 
-  h2, h3 {
+  h2 {
+    color: #fff;
+    font: 40px "Century Gothic", Futura, sans-serif; 
+  }
+  
+  h3 {
     color: #fff;
   }
   

@@ -12,7 +12,11 @@ class App extends React.Component {
 
   state = {
     departingBuses: [],
-    arrivingBuses: []
+    arrivingBuses: [],
+    loadingDepartingBuses: [],
+    loadingArrivingBuses: [],
+    departingLoading: "loading",
+    arrivingLoading: "loading"
   };
 
   componentDidMount() {
@@ -21,18 +25,27 @@ class App extends React.Component {
 
   stateUpdateCallback(bus, direction) {
     var buses = [bus];
+    var isLoading = "done";
 
     if (direction === "departing") {
       buses = this.state.departingBuses.concat(buses);
+      this.state.loadingDepartingBuses.forEach((bus) => 
+          bus.isLoading === true ? isLoading = "loading" : isLoading); 
+
       this.setState({
         departingBuses : buses,
-        arrivingBuses : this.state.arrivingBuses
+        arrivingBuses : this.state.arrivingBuses,
+        departingLoading : isLoading,
       });
     } else if (direction === "arriving") {
       buses = this.state.arrivingBuses.concat(buses);
+      this.state.loadingArrivingBuses.forEach((bus) => 
+          bus.isLoading === true ? isLoading = "loading" : isLoading);
+
       this.setState({
         departingBuses : this.state.departingBuses,
-        arrivingBuses : buses
+        arrivingBuses : buses,
+        arrivingLoading : isLoading,
       });
     }
     
@@ -69,7 +82,12 @@ class App extends React.Component {
       stopTimes.forEach(busJSON => {
         var direction = busJSON.stop_id !== "1882" ? "departing" : "arriving";
         var bus = new Bus(busJSON.trip_id, busJSON.stop_id, busJSON.departure_time, direction, this);
-        console.log(bus);
+        var buses = [bus];
+        if (direction === "departing") {
+          this.setState({loadingDepartingBuses : this.state.loadingDepartingBuses.concat(buses)});
+        } else {    
+          this.setState({loadingArrivingBuses : this.state.loadingArrivingBuses.concat(buses)});
+        }
       });
     });
   }
@@ -79,17 +97,14 @@ class App extends React.Component {
     <div className="BusTable">
       <h1 align = "center">UQBus</h1>
       <h2 align = "center">UQ Lakes</h2>
-      <Grid container spacing={0} alignItems="center" justify="center">
-        <Grid item>
-          <h2>Departures</h2>
-          <BusDisplayTable app = {this} buses = {this.state.departingBuses}/>
+      <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+        <Grid item style = {{minWidth: 345, width: "60%"}}>
+          <h3>Departures</h3>
+          <BusDisplayTable loading = {this.state.departingLoading} buses = {this.state.departingBuses}/>
         </Grid>
-      </Grid>
-
-      <Grid container spacing={0} alignItems="center" justify="center">
-        <Grid item>
-          <h2>Arrivals</h2>
-          <BusDisplayTable app = {this} buses = {this.state.arrivingBuses}/>
+        <Grid item style = {{minWidth: 345, width: "60%"}}>
+          <h3>Arrivals</h3>
+          <BusDisplayTable loading = {this.state.arrivingLoading} buses = {this.state.arrivingBuses}/>
         </Grid>
       </Grid>
     </div>
