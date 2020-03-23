@@ -89,7 +89,7 @@ class BusDisplayTable extends React.Component {
   getTable() {
     return (
       <TableContainer component={Paper}>
-        <Table className={this.state.classes.table} size="small" aria-label="simple table">
+        <Table className={this.state.classes.table} aria-label="simple table">
           <colgroup>
             <col style = {{width : '2%'}}/>
             <col style = {{width : '83%'}}/>

@@ -1,9 +1,8 @@
 class Bus {
-    constructor(tripId, stopId, time, direction, application) {
+    constructor(tripId, stopId, time, application) {
   
       this.tripId = tripId;
       this.stopId = stopId;
-      this.direction = direction;
   
       this.time = "Loading... ";
       this.trip = "Loading... ";
@@ -39,7 +38,6 @@ class Bus {
       var stopPromise = timePromise.then(function() {
         this.time = time;
         this.time = this.time.substring(0, 5);
-        application.stateUpdateCallback();
 
         return this.getStopPromise(stopId)
       }.bind(this));
@@ -49,11 +47,10 @@ class Bus {
         this.stopName = stopsDictionary[locStop[0].stop_name];
       }.bind(this));
   
-      loadCompletePromise.then(() => {
-          this.isLoading = false;
-          application.stateUpdateCallback(this, this.direction)
-        }
-      );
+      loadCompletePromise.then(function() {
+        this.isLoading = false;
+        application.stateUpdateCallback(this);
+      }.bind(this));
     }
   
     getTripPromise(tripId) {
