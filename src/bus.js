@@ -1,3 +1,5 @@
+const apiURL = "http://uqbus.richal.tech"
+
 class Bus {
     constructor(tripId, stopId, time, application) {
   
@@ -54,27 +56,27 @@ class Bus {
     }
   
     getTripPromise(tripId) {
-      return fetch("http://uqbus.richal.tech/trip/trip_id/" + tripId + "/")
+      return fetch(apiURL + "/trip/trip_id/" + tripId + "/")
           .then(res => res.json());
     }
   
     getRoutePromise(routeId) {
-      return fetch("http://uqbus.richal.tech/route/route_id/" + routeId + "/")
+      return fetch(apiURL + "/route/route_id/" + routeId + "/")
           .then(res => res.json());
     }
   
     getStopPromise(stopId) {
-      return fetch("http://uqbus.richal.tech/stop/stop_id/" + stopId + "/")
+      return fetch(apiURL + "/stop/stop_id/" + stopId + "/")
           .then(res => res.json());
     }
   
     getTripUpdatePromise(tripId) {
-      return fetch("http://uqbus.richal.tech/trip_update/trip_id/" + tripId + "/")
+      return fetch(apiURL + "/trip_update/trip_id/" + tripId + "/")
           .then(res => res.json());
     }
   
     getStopTimeUpdate(tripUpdateId) {
-      return fetch("http://uqbus.richal.tech/stop_time_update/trip_update_id/" + tripUpdateId + "/")
+      return fetch(apiURL + "/stop_time_update/trip_update_id/" + tripUpdateId + "/")
           .then(res => res.json());
     }
   }

@@ -5,6 +5,7 @@ import BusDisplayTable from './busDisplayTable.js';
 import Bus from './bus.js';
 
 const uqStops = ["1853", "1877", "1878", "1880", "1883", "1882"];
+const apiURL = "http://uqbus.richal.tech" //http://uqbus.richal.tech/
 
 class BusDisplay extends React.Component {
     state = {
@@ -52,7 +53,7 @@ class BusDisplay extends React.Component {
             stops = i === uqStops.length - 1 ? stops.toString() + uqStops[i].toString() : stops.toString() + uqStops[i].toString() + ","; 
         }
 
-        var busPromises = fetch("http://uqbus.richal.tech/stop_time?time=" + date + " " + time + "&stop_id=" + stops)
+        var busPromises = fetch(apiURL + "/stop_time?time=" + date + " " + time + "&stop_id=" + stops)
                 .then(res => {
                     return res.json();
                 });
@@ -78,13 +79,6 @@ class BusDisplay extends React.Component {
                 }
             });
         });
-
-        if (this.state.loadingBuses.length === 0) {
-            console.log(this.state.loadingBuses);
-            this.setState({isLoading: "done"});
-
-            this.forceUpdate();
-        }
     }
 
     render() {
