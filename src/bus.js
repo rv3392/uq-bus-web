@@ -1,4 +1,4 @@
-const apiURL = "http://uqbus.richal.tech"
+const apiURL = "https://uq-bus-backend-api.herokuapp.com/"
 
 class Bus {
     constructor(tripId, stopId, time, application) {

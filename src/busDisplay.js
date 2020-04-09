@@ -5,7 +5,7 @@ import BusDisplayTable from './busDisplayTable.js';
 import Bus from './bus.js';
 
 const uqStops = ["1853", "1877", "1878", "1880", "1883", "1882"];
-const apiURL = "http://uqbus.richal.tech" //http://uqbus.richal.tech/
+const apiURL = "https://uq-bus-backend-api.herokuapp.com/" //http://uqbus.richal.tech/
 
 class BusDisplay extends React.Component {
     state = {
