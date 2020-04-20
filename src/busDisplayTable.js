@@ -62,15 +62,37 @@ class BusDisplayTable extends React.Component {
     }); 
   }
 
+  busRowSorter(a, b) {
+    var compareHours = parseInt(a.time.split(":")[0]) - parseInt(b.time.split(":")[0])
+    var compareMinutes = parseInt(a.time.split(":")[1]) - parseInt(b.time.split(":")[1])
+
+    if (compareHours > 0) {
+      return 1
+    } else if (compareHours < 0) {
+      return -1
+    } else {
+      if (compareMinutes > 0) {
+        return 1
+      } else if (compareMinutes < 0) {
+        return -1
+      } else {
+        return 0
+      }
+    }
+  }
+
   getRows() {
-    return this.state.rows.map(bus => {
+    var busList = this.state.rows.sort(this.busRowSorter)
+    var busMap = busList.map(bus => {
       return <TableRow>
                 <TableCell align = "right">{bus.no}</TableCell>
                 <TableCell>{bus.route}</TableCell>
                 <TableCell align = "center">{bus.stop}</TableCell>
                 <TableCell>{bus.time}</TableCell>
               </TableRow>
-    });
+    })
+    console.log(busMap)
+    return busMap
   }
 
   getLoadingCircle() {
