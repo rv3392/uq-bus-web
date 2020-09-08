@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Grid from '@material-ui/core/Grid';
 import './index.css';
 
-import BusDisplay from './busDisplay.js';
+import BusDisplay from './bus_display.js';
 
 function App() {
     return (
