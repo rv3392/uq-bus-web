@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,60 +9,48 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-class BusDisplayTable extends React.Component {
-  state = {
-    rows : this.convertBuses(this.props.buses), 
-    initialRows : this.convertBuses(this.props.buses),
-    loading : this.props.loading,
-    classes : this.useStyles()
-  };
+function convertBuses(busProps) {
+  var buses = [];
 
-  useStyles() {
-    return makeStyles(theme => ({
-            table: {
-              minWidth: 500,
+  for (var i = 0; i < busProps.length; i++) {
+      var busProp = busProps[i];
+      var bus = {no:busProp.routeShortName, route:busProp.routeLongName,
+          stop:busProp.stopName, time:busProp.time};
+      buses.push(bus);
+  }
+
+  return buses;
+}
+
+function useStyles() {
+  return makeStyles(theme => ({
+          table: {
+            minWidth: 500,
+          },
+
+          loading: {
+            display: 'flex',
+            '& > * + *': {
+              marginTop: theme.spacing(2),
             },
+            colorPrimary: "#fff"
+          },
+        }));
+}
 
-            loading: {
-              display: 'flex',
-              '& > * + *': {
-                marginTop: theme.spacing(2),
-              },
-              colorPrimary: "#fff"
-            },
-          }));
-  }
+function BusDisplayTable(props) {
+  const [rows, setRows] = useState(convertBuses(props.buses));
+  const [initialRows, setInitialRows] = useState(convertBuses(props.buses));
+  const [loading, setLoading] = useState(props.loading);
+  const classes = useStyles();
 
-  convertBuses(busProps) {
-      var buses = [];
+  useEffect(() => {
+    setRows(convertBuses(props.buses));
+    setInitialRows(rows);
+    setLoading(props.loading);
+  }, [props.buses, props.loading])
 
-      for (var i = 0; i < busProps.length; i++) {
-          var busProp = busProps[i];
-          var bus = {no:busProp.routeShortName, route:busProp.routeLongName,
-              stop:busProp.stopName, time:busProp.time};
-          buses.push(bus);
-      }
-
-      return buses;
-  }
-
-  componentDidMount() {
-    this.setState({
-      rows : this.convertBuses(this.props.buses),
-      initialRows: this.state.rows,
-      loading : this.props.loading
-    }); 
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      rows : this.convertBuses(this.props.buses),
-      initialRows: this.state.rows,
-      loading : this.props.loading
-    }); 
-  }
-
-  busRowSorter(a, b) {
+  const busRowSorter = (a, b) => {
     var compareHours = parseInt(a.time.split(":")[0]) - parseInt(b.time.split(":")[0])
     var compareMinutes = parseInt(a.time.split(":")[1]) - parseInt(b.time.split(":")[1])
 
@@ -81,8 +69,8 @@ class BusDisplayTable extends React.Component {
     }
   }
 
-  getRows() {
-    var busList = this.state.rows.sort(this.busRowSorter)
+  const getRows = useCallback(() => {
+    var busList = rows.sort(busRowSorter)
     var busMap = busList.map(bus => {
       return <TableRow>
                 <TableCell align = "right">{bus.no}</TableCell>
@@ -93,12 +81,12 @@ class BusDisplayTable extends React.Component {
     })
     console.log(busMap)
     return busMap
-  }
+  }, [rows]);
 
-  getLoadingCircle() {
+  const getLoadingCircle = useCallback(() => {
     return (
       <div align = "center">
-          {this.state.loading === 'loading' ? (
+          {loading === 'loading' ? (
             <div>
               <br></br>
               <CircularProgress color="primary" style={{color:"#fff"}}/>
@@ -106,12 +94,12 @@ class BusDisplayTable extends React.Component {
           ) : (<div></div>)}
         </div>
     );
-  }
+  });
 
-  getTable() {
+  const getTable = useCallback(() => {
     return (
       <TableContainer component={Paper}>
-        <Table className={this.state.classes.table} aria-label="simple table">
+        <Table className={classes.table} aria-label="simple table">
           <colgroup>
             <col style = {{width : '2%'}}/>
             <col style = {{width : '83%'}}/>
@@ -127,21 +115,19 @@ class BusDisplayTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.getRows()}
+            {getRows()}
           </TableBody>
         </Table>
       </TableContainer>
     );
-  }
+  }, [classes]);
 
-  render() {
-      return (
-        <div>
-          {this.getTable()}
-          {this.getLoadingCircle()}
-        </div>
-      );
-    }
+  return (
+    <div>
+      {getTable()}
+      {getLoadingCircle()}
+    </div>
+  );
 }
 
 export default BusDisplayTable;

@@ -5,8 +5,7 @@ import './index.css';
 
 import BusDisplay from './busDisplay.js';
 
-class App extends React.Component {
-  render() {
+function App() {
     return (
       <div>
         <div class="title">
@@ -31,8 +30,7 @@ class App extends React.Component {
           </Grid>
         </div>
       </div>
-    )
-  }
+    );
 }
 
 ReactDOM.render(

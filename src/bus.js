@@ -1,7 +1,7 @@
 const apiURL = "https://uq-bus-backend-api.herokuapp.com/"
 
 class Bus {
-    constructor(tripId, stopId, time, application) {
+    constructor(tripId, stopId, time, stateUpdateCallback) {
   
       this.tripId = tripId;
       this.stopId = stopId;
@@ -51,7 +51,7 @@ class Bus {
   
       loadCompletePromise.then(function() {
         this.isLoading = false;
-        application.stateUpdateCallback(this);
+        stateUpdateCallback(this);
       }.bind(this));
     }
   
