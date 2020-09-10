@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import './index.css';
 
 import BusDisplayTable from './bus_display_table.js';
 import Bus from './bus.js';

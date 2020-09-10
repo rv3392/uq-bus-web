@@ -9,6 +9,8 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { useStyles } from '../table_utils.js'
+
 function convertBuses(busProps) {
   var buses = [];
 
@@ -20,22 +22,6 @@ function convertBuses(busProps) {
   }
 
   return buses;
-}
-
-function useStyles() {
-  return makeStyles(theme => ({
-          table: {
-            minWidth: 500,
-          },
-
-          loading: {
-            display: 'flex',
-            '& > * + *': {
-              marginTop: theme.spacing(2),
-            },
-            colorPrimary: "#fff"
-          },
-        }));
 }
 
 function BusDisplayTable(props) {
