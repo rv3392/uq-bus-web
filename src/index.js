@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import './index.css';
 
 import BusDisplay from './bus_display.js';
+import ServiceUpdatesDisplay from './service_updates/service_updates_display.js';
 
 function App() {
     return (
@@ -17,6 +18,14 @@ function App() {
               <h1 align = "left">UQBus</h1>
             </Grid>
           </Grid>
+      </div>
+      <div class="service-updates">
+        <h2 align="center">Service Updates</h2>
+        <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+          <Grid item style = {{minWidth: 345, width: "60%"}}>
+                <ServiceUpdatesDisplay></ServiceUpdatesDisplay>
+          </Grid>
+        </Grid>
       </div>
       <div class="uq-lakes-tables">
           <h2 align = "center">UQ Lakes</h2>
