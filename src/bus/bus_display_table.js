@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'
 
-import { useStyles } from '../table_utils.js'
+import BusAccordionRow from './bus_table_accordion_row.js';
+
+const useStyles = makeStyles({
+  root: {
+      width: '100%',
+  },
+});
 
 function convertBuses(busProps) {
   var buses = [];
@@ -17,7 +16,8 @@ function convertBuses(busProps) {
   for (var i = 0; i < busProps.length; i++) {
       var busProp = busProps[i];
       var bus = {no:busProp.routeShortName, route:busProp.routeLongName,
-          stop:busProp.stopName, time:busProp.time};
+          stop:busProp.stopName, time:busProp.time, delay:busProp.delay, 
+          colour:busProp.routeColour};
       buses.push(bus);
   }
 
@@ -58,12 +58,7 @@ function BusDisplayTable(props) {
   const getRows = useCallback(() => {
     var busList = rows.sort(busRowSorter)
     var busMap = busList.map(bus => {
-      return <TableRow>
-                <TableCell align = "right">{bus.no}</TableCell>
-                <TableCell>{bus.route}</TableCell>
-                <TableCell align = "center">{bus.stop}</TableCell>
-                <TableCell>{bus.time}</TableCell>
-              </TableRow>
+      return <BusAccordionRow busData={bus} ></BusAccordionRow>
     })
     console.log(busMap)
     return busMap
@@ -82,36 +77,14 @@ function BusDisplayTable(props) {
     );
   });
 
-  const getTable = useCallback(() => {
-    return (
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
-          <colgroup>
-            <col style = {{width : '2%'}}/>
-            <col style = {{width : '83%'}}/>
-            <col style = {{width : '5%'}}/>
-            <col style = {{width : '10%'}}/>
-          </colgroup>
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell align="left">Route</TableCell>
-              <TableCell align="left">Stop</TableCell>
-              <TableCell align="left">Time</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    );
-  }, [classes]);
-
   return (
     <div>
-      {getTable()}
-      {getLoadingCircle()}
+      <div>
+        {getRows()}
+      </div>
+      <div>
+          {getLoadingCircle()}
+      </div>
     </div>
   );
 }

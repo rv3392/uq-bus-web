@@ -81,7 +81,6 @@ function BusDisplay(props) {
 
     return (
         <div className="BusTable">
-            <h3>{props.name}</h3>
             <BusDisplayTable loading = {isLoading} buses = {buses}/>
         </div>
     );
