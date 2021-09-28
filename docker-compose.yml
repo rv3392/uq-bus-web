@@ -1,0 +1,5 @@
+services:
+  uq-bus-web:
+    build: .
+    ports:
+      - 80:80
