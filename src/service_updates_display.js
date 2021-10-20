@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import { useStyles } from './table_utils.js';
 import { LoadingCircle } from './loading_circle.js';
 
-const apiURL = "https://uq-bus-backend-api.herokuapp.com/"
+const apiURL = process.env.REACT_APP_API_URL;
 const uqLakesServices = ["28", "29", "66", "129", "139", "169", "192", "209"]
 
 async function getServiceUpdatesForService(service) {

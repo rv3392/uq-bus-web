@@ -4,7 +4,7 @@ import BusDisplayTable from './bus_display_table.js';
 import Bus from './bus.js';
 
 const uqStops = ["1853", "1877", "1878", "1880", "1883", "1882"];
-const apiURL = "https://uq-bus-backend-api.herokuapp.com/" //http://uqbus.richal.tech/
+const apiURL = process.env.REACT_APP_API_URL; //http://uqbus.richal.tech/
 
 function getBrisbaneTime() {
     var today = new Date();

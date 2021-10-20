@@ -1,4 +1,4 @@
-const apiURL = "https://uq-bus-backend-api.herokuapp.com/"
+const apiURL = process.env.REACT_APP_API_URL;
 
 class Bus {
     constructor(tripId, stopId, time, stateUpdateCallback) {

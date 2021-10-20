@@ -1,5 +1,7 @@
 FROM node:14 as node
 LABEL maintainer="richal.verma@uq.net.au"
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL $REACT_APP_API_URL
 WORKDIR /usr/src/app
 COPY ./src ./uq-bus-web/src
 COPY ./public ./uq-bus-web/public
